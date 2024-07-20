@@ -1,5 +1,6 @@
 import { BsLightningChargeFill } from "react-icons/bs";
 import { FiMenu } from "react-icons/fi";
+import { Button } from "@/components/ui/button";
 
 const NavBar = () => {
   return (
@@ -16,9 +17,9 @@ const NavBar = () => {
       </h2>
 
       <div className="flex items-center justify-between">
-        <button className="text-[1rem] cursor-pointer bg-button-blue py-1 px-4 rounded-[3px] mr-[20px] text-bright-blue">
+        <Button className="text-[1rem] cursor-pointer bg-button-blue py-1 px-4 rounded-[3px] mr-[20px] text-bright-blue">
           Health
-        </button>
+        </Button>
         <FiMenu className="text-[2rem] cursor-pointer" />
       </div>
 
