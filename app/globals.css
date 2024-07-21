@@ -93,7 +93,7 @@
 
     .flat-circle {
       transform-style: preserve-3d;
-      transform: rotateX(-80deg) translateZ(140px);
+      transform: rotateX(-80deg) translateZ(130px);
     }
   }
 }

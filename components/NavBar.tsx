@@ -24,11 +24,6 @@ const NavBar = () => {
       </div>
 
       <div className="absolute top-[calc(100%+2px)] left-1/2 transform border-b-[2px] border-x-[2px] border-bright-blue -translate-x-1/2 flex items-center space-x-4 bg-dark-blue py-2 px-4 rounded-md shadow-lg">
-        {/* <Image
-          src={shape}
-          alt="shape"
-          className="absolute top-[100%] left-1/2 transform -translate-x-1/2 w-[100%] h-[100%]"
-        /> */}
         <h3 className="text-white">0 Alerts</h3>
         <div className="w-px h-6 bg-gray-500"></div>
         <h3 className="text-yellow-500">5 Warnings</h3>
