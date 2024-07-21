@@ -40,12 +40,12 @@ export const sideNavItems: {
     color: "text-red-500",
     href: "/locations/phoenix",
   },
-  {
-    title: "10 Scottsoale AZS",
-    time: "19:52",
-    color: "text-purple-700",
-    href: "/locations/scottsoale",
-  },
+  // {
+  //   title: "10 Scottsoale AZS",
+  //   time: "19:52",
+  //   color: "text-purple-700",
+  //   href: "/locations/scottsoale",
+  // },
   {
     title: "10 Singapore SGP",
     time: "19:52",

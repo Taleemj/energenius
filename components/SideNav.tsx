@@ -31,7 +31,7 @@ const SideNav = () => {
           {isDropdownOpen && (
             <ul className="flex items-center px-4 flex-col mt-7 py-4 border-t-[1.8px] w-full z-50 transition-all duration-200">
               {sideNavItems.map((item, i) => (
-                <NavLink key={i} href={item.href} textColor="text-white" title={item.title} time={item.time} />
+                <NavLink key={i} href={item.href} textColor={item.color} title={item.title} time={item.time} />
               ))}
             </ul>
           )}
