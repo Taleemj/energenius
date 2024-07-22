@@ -59,7 +59,7 @@ const WorldGlobe = () => {
 
   const recenterGlobe = () => {
     if (globeRef.current) {
-      globeRef.current.pointOfView({ lat: 0, lng: 0, altitude: 2.5 }, 600);
+      globeRef.current.pointOfView({ lat: 38, lng: -99, altitude: 2.5 }, 600);
     }
   };
 
