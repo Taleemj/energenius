@@ -2,6 +2,7 @@ import { FC } from "react";
 import { BsLightningChargeFill } from "react-icons/bs";
 import { FiMenu } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface Props {
   showWarningAlerts: boolean;
@@ -10,12 +11,14 @@ interface Props {
 const NavBar: FC<Props> = ({ showWarningAlerts }) => {
   return (
     <div className="w-full z-40 fixed top-0 text-white bg-dark-blue py-4 px-6 flex items-center justify-between border-b-[1px] border-dark-gray">
-      <div className="flex items-center">
-        <div className="w-6 h-6 mr-2 rounded-full bg-bright-blue flex items-center justify-center text-dark-blue">
-          <BsLightningChargeFill />
+      <Link href="/">
+        <div className="flex items-center">
+          <div className="w-6 h-6 mr-2 rounded-full bg-bright-blue flex items-center justify-center text-dark-blue">
+            <BsLightningChargeFill />
+          </div>
+          <h1 className="text-[1.3rem] font-bold">Energenuis</h1>
         </div>
-        <h1 className="text-[1.3rem] font-bold">Energenuis</h1>
-      </div>
+      </Link>
 
       <h2 className="text-[1.3rem] font-bold">
         10:52 <span className="text-text-gray font-normal">EST</span>
