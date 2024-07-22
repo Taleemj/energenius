@@ -5,8 +5,10 @@ import { MeshPhongMaterial } from "three";
 import { useRouter } from "next/navigation";
 import { GlobeMethods } from "react-globe.gl";
 import { FaCompressArrowsAlt } from "react-icons/fa";
+import { useParams } from "next/navigation";
 
 const WorldGlobe = () => {
+  const params = useParams();
   const router = useRouter();
   const globeRef = useRef<GlobeMethods | undefined>();
   const [windowWidth, setWindowWidth] = useState(0);
@@ -23,24 +25,28 @@ const WorldGlobe = () => {
     setWindowHeight(window.innerHeight);
     setWindowWidth(window.innerWidth);
 
-    fetch("/maps/countries.geojson")
-      .then((response) => response.json())
-      .then((data) => setGeoJsonData(data));
+    if (!geoJsonData) {
+      fetch("/maps/countries.geojson")
+        .then((response) => response.json())
+        .then((data) => setGeoJsonData(data));
+    }
 
-    fetch("/maps/locations.geojson")
-      .then((response) => response.json())
-      .then((data) =>
-        setGeoLocations(
-          data.features.map((d: any) => ({
-            lat: d.geometry.coordinates[1],
-            lng: d.geometry.coordinates[0],
-            size: 30,
-            properties: {
-              ...d.properties,
-            },
-          }))
-        )
-      );
+    if (!geoLocations) {
+      fetch("/maps/locations.geojson")
+        .then((response) => response.json())
+        .then((data) =>
+          setGeoLocations(
+            data.features.map((d: any) => ({
+              lat: d.geometry.coordinates[1],
+              lng: d.geometry.coordinates[0],
+              size: 30,
+              properties: {
+                ...d.properties,
+              },
+            }))
+          )
+        );
+    }
 
     const handleResize = () => {
       setWindowHeight(window.innerHeight);
@@ -51,12 +57,25 @@ const WorldGlobe = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    console.log(params);
+    if (geoLocations && params?.slug) {
+      if (globeRef.current) {
+        geoLocations.map((d: any) => {
+          if (d.properties.href.includes(params.slug)) {
+            globeRef.current?.pointOfView({ lat: d.lat, lng: d.lng, altitude: 0.7 }, 600);
+          }
+        });
+      }
+    }
+  }, [params, geoLocations, globeRef.current]);
+
   const locationClick = (d: any) => {
     router.push(d.properties.href);
 
     if (globeRef.current) {
       // globeRef.current.toGlobeCoords(d.lat, d.lng);
-      globeRef.current.pointOfView({ lat: d.lat, lng: d.lng, altitude: 0.6 }, 600);
+      globeRef.current.pointOfView({ lat: d.lat, lng: d.lng, altitude: 0.7 }, 600);
     }
   };
 
