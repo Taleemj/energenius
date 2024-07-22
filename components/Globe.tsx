@@ -57,6 +57,12 @@ const WorldGlobe = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const recenterGlobe = () => {
+    if (globeRef.current) {
+      globeRef.current.pointOfView({ lat: 0, lng: 0, altitude: 2.5 }, 600);
+    }
+  };
+
   useEffect(() => {
     console.log(params);
     if (geoLocations && params?.slug) {
@@ -67,6 +73,8 @@ const WorldGlobe = () => {
           }
         });
       }
+    } else if (!params?.slug) {
+      recenterGlobe();
     }
   }, [params, geoLocations, globeRef.current]);
 
@@ -76,12 +84,6 @@ const WorldGlobe = () => {
     if (globeRef.current) {
       // globeRef.current.toGlobeCoords(d.lat, d.lng);
       globeRef.current.pointOfView({ lat: d.lat, lng: d.lng, altitude: 0.7 }, 600);
-    }
-  };
-
-  const recenterGlobe = () => {
-    if (globeRef.current) {
-      globeRef.current.pointOfView({ lat: 0, lng: 0, altitude: 2.5 }, 600);
     }
   };
 
