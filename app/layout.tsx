@@ -5,7 +5,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import NavBar from "@/components/NavBar";
 import SideNav from "@/components/SideNav";
 import Background from "@/components/Background";
-import WorldGlobe from "@/components/Globe";
+import dynamic from "next/dynamic";
+// import WorldGlobe from "@/components/Globe";
+const WorldGlobe = dynamic(() => import("@/components/Globe"), { ssr: false });
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -1,14 +1,14 @@
 "use client";
-
-import dynamic from "next/dynamic";
-import { useEffect, useState, useRef, forwardRef } from "react";
-const Globe = dynamic(() => import("react-globe.gl"), { ssr: false });
+import { useEffect, useState, useRef } from "react";
+import Globe from "react-globe.gl";
 import { MeshPhongMaterial } from "three";
 import { useRouter } from "next/navigation";
+import { GlobeMethods } from "react-globe.gl";
+import { FaCompressArrowsAlt } from "react-icons/fa";
 
 const WorldGlobe = () => {
   const router = useRouter();
-  const globeRef = useRef();
+  const globeRef = useRef<GlobeMethods | undefined>();
   const [windowWidth, setWindowWidth] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
   const [geoJsonData, setGeoJsonData] = useState(null);
@@ -50,6 +50,21 @@ const WorldGlobe = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const locationClick = (d: any) => {
+    router.push(d.properties.href);
+
+    if (globeRef.current) {
+      // globeRef.current.toGlobeCoords(d.lat, d.lng);
+      globeRef.current.pointOfView({ lat: d.lat, lng: d.lng, altitude: 0.6 }, 600);
+    }
+  };
+
+  const recenterGlobe = () => {
+    if (globeRef.current) {
+      globeRef.current.pointOfView({ lat: 0, lng: 0, altitude: 2.5 }, 600);
+    }
+  };
 
   return (
     <div className="fixed w-[100vw] h-[100vh] z-[-1] top-[10px] left-0">
@@ -94,10 +109,11 @@ const WorldGlobe = () => {
           // @ts-ignore
           el.style["pointer-events"] = "auto";
           el.style.cursor = "pointer";
-          el.onclick = () => router.push(d.properties.href);
+          el.onclick = () => locationClick(d);
           return el;
         }}
       />
+      <FaCompressArrowsAlt onClick={recenterGlobe} className="absolute bottom-10 right-5 cursor-pointer text-[30px]" />
     </div>
   );
 };
