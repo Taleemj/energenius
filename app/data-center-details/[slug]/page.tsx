@@ -1,7 +1,9 @@
 import Background from "@/components/Background";
 import { BsLightningChargeFill } from "react-icons/bs";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Card, CardContent } from "@/components/ui/card";
+import DonutPieChart from "@/components/DonutPieChart";
+import RegularPieChart from "@/components/RegularPieChart";
 
 const Page = () => {
   return (
@@ -19,16 +21,8 @@ const Page = () => {
 
       <div className="flex items-center justify-between mt-5 w-[85vw] h-[55vh] mx-auto">
         <div className="w-[49.5%] h-full flex items-center justify-between flex-col">
-          <Card className="bg-dark-blue w-full h-[49%]">
-            <CardContent>
-              <p>Donut chart</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-dark-blue w-full h-[49%]">
-            <CardContent>
-              <p>Pie chart</p>
-            </CardContent>
-          </Card>
+          <DonutPieChart />
+          <RegularPieChart />
         </div>
         <Card className="bg-dark-blue w-[49.5%] h-full">
           <CardContent>
