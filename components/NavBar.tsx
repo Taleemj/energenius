@@ -1,8 +1,13 @@
+import { FC } from "react";
 import { BsLightningChargeFill } from "react-icons/bs";
 import { FiMenu } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 
-const NavBar = () => {
+interface Props {
+  showWarningAlerts: boolean;
+}
+
+const NavBar: FC<Props> = ({ showWarningAlerts }) => {
   return (
     <div className="w-full z-40 fixed top-0 text-white bg-dark-blue py-4 px-6 flex items-center justify-between border-b-[1px] border-dark-gray">
       <div className="flex items-center">
@@ -23,11 +28,13 @@ const NavBar = () => {
         <FiMenu className="text-[2rem] cursor-pointer" />
       </div>
 
-      <div className="absolute top-[calc(100%+2px)] left-1/2 transform border-b-[2px] border-x-[2px] border-bright-blue -translate-x-1/2 flex items-center space-x-4 bg-dark-blue py-2 px-4 rounded-md shadow-lg">
-        <h3 className="text-white">0 Alerts</h3>
-        <div className="w-px h-6 bg-gray-500"></div>
-        <h3 className="text-yellow-500">5 Warnings</h3>
-      </div>
+      {showWarningAlerts && (
+        <div className="absolute top-[calc(100%+2px)] left-1/2 transform border-b-[2px] border-x-[2px] border-bright-blue -translate-x-1/2 flex items-center space-x-4 bg-dark-blue py-2 px-4 rounded-md shadow-lg">
+          <h3 className="text-white">0 Alerts</h3>
+          <div className="w-px h-6 bg-gray-500"></div>
+          <h3 className="text-yellow-500">5 Warnings</h3>
+        </div>
+      )}
     </div>
   );
 };
