@@ -115,15 +115,6 @@ const WorldGlobe = () => {
             color: 0x003468,
           })
         }
-        // labelsData={geoLocations ? geoLocations.features : []}
-        // labelLat={(d) => d.geometry.coordinates[1]}
-        // labelLng={(d) => d.geometry.coordinates[0]}
-        // labelText={(d) => d.properties.name}
-        // labelSize={(d) => 1}
-        // labelAltitude={0.02}
-        // labelDotRadius={(d) => 0.5}
-        // labelColor={() => "rgba(255, 165, 0, 0.75)"}
-        // labelResolution={2}
         htmlElementsData={geoLocations ? geoLocations : []}
         htmlElement={(d: any) => {
           const el = document.createElement("div");
@@ -139,7 +130,7 @@ const WorldGlobe = () => {
       />
       <FaCompressArrowsAlt
         onClick={recenterGlobe}
-        className="absolute bottom-[48%] md:bottom-10 right-5 cursor-pointer text-[20px] md:text-[30px] z-[9999]"
+        className="fixed bottom-[45%] md:bottom-10 right-5 cursor-pointer text-[20px] md:text-[30px] z-20"
       />
     </div>
   );

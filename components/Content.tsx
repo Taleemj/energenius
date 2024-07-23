@@ -8,11 +8,11 @@ interface Props {
 
 const Content: FC<Props> = ({ title }) => {
   return (
-    <section className="md:ml-[22%] ml-0 mt-0 w-[78%] overflow-hidden h-full bg-red-500 z-5 flex items-start justify-between md:mt-[4%]">
+    <>
       <GlobeShadow />
       <Tabs
         defaultValue="Activity"
-        className="md:w-[24%] w-[90%] right-[5%] top-[60%] mx-auto absolute md:top-[30%] md:right-[30px]"
+        className="md:w-[24%] w-[90%] right-auto left-1/2 -translate-x-1/2 md:left-auto md:-translate-x-0 top-[60%] mx-auto absolute md:top-[30%] md:right-[30px]"
       >
         <TabsList className="w-full flex items-center justify-between bg-dark-blue">
           <TabsTrigger
@@ -41,7 +41,7 @@ const Content: FC<Props> = ({ title }) => {
           <h1>Drawings</h1>
         </TabsContent>
       </Tabs>
-    </section>
+    </>
   );
 };
 

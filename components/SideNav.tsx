@@ -20,11 +20,19 @@ interface Props {
 const SideNav: FC<Props> = ({ setSideNavVisible, sideNavVisible }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
 
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setSideNavVisible(false);
+    } else {
+      setSideNavVisible(true);
+    }
+  }, []);
+
   return (
     <NavigationMenu
       className={`fixed top-0 ${
         sideNavVisible ? "left-0" : "left-[-100%]"
-      }  w-[100vw] z-[99] md:w-[20vw] min-h-[100vh] z-2 bg-dark-blue pt-[80px] transition-all duration-300`}
+      }  w-[100vw] md:w-[20vw] min-h-[100vh] z-30 bg-dark-blue pt-[80px] transition-all duration-300`}
     >
       <NavigationMenuList className="w-full h-full">
         <NavigationMenuItem className="w-full h-full pt-10 md:pt-0">
