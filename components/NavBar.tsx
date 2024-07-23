@@ -6,8 +6,8 @@ import Link from "next/link";
 
 interface Props {
   showWarningAlerts: boolean;
-  sideNavVisible: boolean;
-  setSideNavVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  sideNavVisible?: boolean;
+  setSideNavVisible?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const NavBar: FC<Props> = ({ showWarningAlerts, setSideNavVisible, sideNavVisible }) => {
@@ -30,7 +30,10 @@ const NavBar: FC<Props> = ({ showWarningAlerts, setSideNavVisible, sideNavVisibl
         <Button className="text-[1rem] cursor-pointer bg-button-blue py-0 px-2 md:py-1 md:px-4 rounded-[3px] mr-[15px] md:mr-[20px] text-bright-blue">
           Health
         </Button>
-        <FiMenu className="text-[2rem] cursor-pointer" onClick={() => setSideNavVisible(!sideNavVisible)} />
+        <FiMenu
+          className="text-[2rem] cursor-pointer"
+          onClick={() => setSideNavVisible && setSideNavVisible(!sideNavVisible)}
+        />
       </div>
 
       {showWarningAlerts && (
