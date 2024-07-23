@@ -18,18 +18,7 @@ interface Props {
 }
 
 const SideNav: FC<Props> = ({ setSideNavVisible, sideNavVisible }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const closeSideNavMobile = () => {
-    if (window.innerWidth > 768) setSideNavVisible(true);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", closeSideNavMobile);
-    return () => {
-      window.removeEventListener("resize", closeSideNavMobile);
-    };
-  }, []);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(true);
 
   return (
     <NavigationMenu

@@ -12,7 +12,7 @@ const Content: FC<Props> = ({ title }) => {
       <GlobeShadow />
       <Tabs
         defaultValue="Activity"
-        className="md:w-[24%] w-[95%] right-[10px] top-[60%] mx-auto absolute md:top-[30%] md:right-[30px]"
+        className="md:w-[24%] w-[90%] right-[5%] top-[60%] mx-auto absolute md:top-[30%] md:right-[30px]"
       >
         <TabsList className="w-full flex items-center justify-between bg-dark-blue">
           <TabsTrigger

@@ -9,18 +9,18 @@ const WorldGlobe = dynamic(() => import("@/components/Globe"), { ssr: false });
 
 function RootWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [sideNavVisible, setSideNavVisible] = useState(true);
+  const [sideNavVisible, setSideNavVisible] = useState(false);
 
   const isDataCenterDetails = pathname.startsWith("/data-center-details");
 
   useEffect(() => {
     window.addEventListener("resize", () => {
-      if (window.innerWidth < 768) setSideNavVisible(false);
+      if (window.innerWidth > 768) setSideNavVisible(true);
     });
 
     return () => {
       window.removeEventListener("resize", () => {
-        if (window.innerWidth < 768) setSideNavVisible(false);
+        if (window.innerWidth > 768) setSideNavVisible(true);
       });
     };
   }, []);
