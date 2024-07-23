@@ -3,8 +3,8 @@ import worldmap from "@/assets/images/worldmpa.png";
 
 const Background = () => {
   return (
-    <div className="w-full z-[-4] h-screen fixed top-0 right-0">
-      <Image src={worldmap} alt="worldmap" />
+    <div className="min-w-full overflow-hidden z-[-4] h-screen fixed top-0 right-0">
+      <Image src={worldmap} alt="worldmap" className="h-full w-auto" />
       <div className="w-full h-screen fixed top-0 right-0 bg-[#131c27f1]"></div>
     </div>
   );

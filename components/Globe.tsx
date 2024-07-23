@@ -59,12 +59,16 @@ const WorldGlobe = () => {
 
   const recenterGlobe = () => {
     if (globeRef.current) {
-      globeRef.current.pointOfView({ lat: 38, lng: -99, altitude: 2.5 }, 600);
+      if (windowWidth > 768) {
+        globeRef.current.pointOfView({ lat: 38, lng: -99, altitude: 2.5 }, 600);
+        setWindowHeight(window.innerHeight);
+      } else {
+        globeRef.current.pointOfView({ lat: 38, lng: -99, altitude: 3.5 }, 600);
+        setWindowHeight(window.innerHeight * 0.7);
+      }
     }
   };
-
   useEffect(() => {
-    console.log(params);
     if (geoLocations && params?.slug) {
       if (globeRef.current) {
         geoLocations.map((d: any) => {
@@ -82,13 +86,12 @@ const WorldGlobe = () => {
     router.push(d.properties.href);
 
     if (globeRef.current) {
-      // globeRef.current.toGlobeCoords(d.lat, d.lng);
       globeRef.current.pointOfView({ lat: d.lat, lng: d.lng, altitude: 0.7 }, 600);
     }
   };
 
   return (
-    <div className="fixed w-[100vw] h-[100vh] z-[-1] top-[10px] left-0">
+    <div className="fixed w-[100vw] h-[100vh] z-[-1] flex items-start justify-start top-[10px] left-0">
       <Globe
         width={windowWidth}
         height={windowHeight}
@@ -134,7 +137,10 @@ const WorldGlobe = () => {
           return el;
         }}
       />
-      <FaCompressArrowsAlt onClick={recenterGlobe} className="absolute bottom-10 right-5 cursor-pointer text-[30px]" />
+      <FaCompressArrowsAlt
+        onClick={recenterGlobe}
+        className="absolute bottom-[45%] md:bottom-10 right-5 cursor-pointer text-[20px] md:text-[30px] z-[9999]"
+      />
     </div>
   );
 };

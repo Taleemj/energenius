@@ -1,3 +1,4 @@
+"use client";
 import { FC } from "react";
 
 import { TfiDownload } from "react-icons/tfi";
@@ -8,10 +9,15 @@ interface Props {
   textColor: string;
   title: string;
   time: string;
+  setSideNavVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const NavLink: FC<Props> = ({ href, textColor, title, time }) => {
+const NavLink: FC<Props> = ({ href, textColor, title, time, setSideNavVisible }) => {
   return (
-    <Link href={href} className="w-full flex items-start my-[6px] cursor-pointer">
+    <Link
+      href={href}
+      onClick={() => setSideNavVisible(false)}
+      className="w-full flex items-start my-[6px] cursor-pointer"
+    >
       <TfiDownload className="mt-2" />
       <div className="ml-2">
         <h4 className={`text-[14px] ${textColor}`}>{title}</h4>

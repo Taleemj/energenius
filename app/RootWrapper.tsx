@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import NavBar from "@/components/NavBar";
 import SideNav from "@/components/SideNav";
 import Background from "@/components/Background";
@@ -8,15 +9,28 @@ const WorldGlobe = dynamic(() => import("@/components/Globe"), { ssr: false });
 
 function RootWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [sideNavVisible, setSideNavVisible] = useState(true);
 
   const isDataCenterDetails = pathname.startsWith("/data-center-details");
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      if (window.innerWidth < 768) setSideNavVisible(false);
+    });
+
+    return () => {
+      window.removeEventListener("resize", () => {
+        if (window.innerWidth < 768) setSideNavVisible(false);
+      });
+    };
+  }, []);
 
   return (
     <>
       {!isDataCenterDetails && (
         <>
-          <NavBar showWarningAlerts={true} />
-          <SideNav />
+          <NavBar showWarningAlerts={true} setSideNavVisible={setSideNavVisible} sideNavVisible={sideNavVisible} />
+          <SideNav setSideNavVisible={setSideNavVisible} sideNavVisible={sideNavVisible} />
           <Background />
           <WorldGlobe />
         </>
