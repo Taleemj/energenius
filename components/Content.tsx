@@ -50,7 +50,7 @@ export default Content;
 const TabsInfo = () => {
   return (
     <p className="text-white mt-[5px] mb-[15px] text-[14px]">
-      16/5 08:29:57 <span className="text-bright-blue">SGP S02 DO1</span> [ARB control system]{" "}
+      16/5 08:29:57 <span className="text-red-600 font-bold">SGP S02 DO1</span> [ARB control system]{" "}
       <span className="text-yellow-500">Warning cleared</span> m00106 Stat
     </p>
   );
