@@ -139,7 +139,7 @@ const WorldGlobe = () => {
       />
       <FaCompressArrowsAlt
         onClick={recenterGlobe}
-        className="absolute bottom-[45%] md:bottom-10 right-5 cursor-pointer text-[20px] md:text-[30px] z-[9999]"
+        className="absolute bottom-[48%] md:bottom-10 right-5 cursor-pointer text-[20px] md:text-[30px] z-[9999]"
       />
     </div>
   );

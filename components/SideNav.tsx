@@ -18,11 +18,10 @@ interface Props {
 }
 
 const SideNav: FC<Props> = ({ setSideNavVisible, sideNavVisible }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(true);
-  const [leftstyleOnNavOpen, setLeftStyleOnNavOpen] = useState("left-0");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const closeSideNavMobile = () => {
-    if (window.innerWidth < 768) setSideNavVisible(false);
+    if (window.innerWidth > 768) setSideNavVisible(true);
   };
 
   useEffect(() => {
