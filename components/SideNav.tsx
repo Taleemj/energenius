@@ -27,7 +27,7 @@ const SideNav: FC<Props> = ({ setSideNavVisible, sideNavVisible }) => {
       }  w-[100vw] z-[99] md:w-[20vw] min-h-[100vh] z-2 bg-dark-blue pt-[80px] transition-all duration-300`}
     >
       <NavigationMenuList className="w-full h-full">
-        <NavigationMenuItem className="w-full h-full pt-10">
+        <NavigationMenuItem className="w-full h-full pt-10 md:pt-0">
           <NavigationMenuTrigger
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="bg-[rgba(0,0,0,0)] w-full text-white flex items-center justify-start transition-all duration-300"

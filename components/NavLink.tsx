@@ -15,7 +15,7 @@ const NavLink: FC<Props> = ({ href, textColor, title, time, setSideNavVisible })
   return (
     <Link
       href={href}
-      onClick={() => setSideNavVisible(false)}
+      onClick={() => window.innerWidth < 768 && setSideNavVisible(false)}
       className="w-full flex items-start my-[6px] cursor-pointer"
     >
       <TfiDownload className="mt-2" />
