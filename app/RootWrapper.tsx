@@ -11,9 +11,11 @@ function RootWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sideNavVisible, setSideNavVisible] = useState(false);
 
-  const isDataCenterDetails = pathname.startsWith("/data-center-details");
+  const isDataCenterDetails =
+    pathname.includes("/data-center-details/") || pathname.includes("/building-data/") ? true : false;
 
   useEffect(() => {
+    console.log("pathname", pathname);
     window.addEventListener("resize", () => {
       if (window.innerWidth > 768) setSideNavVisible(true);
     });
@@ -31,7 +33,6 @@ function RootWrapper({ children }: { children: React.ReactNode }) {
         <>
           <NavBar showWarningAlerts={true} setSideNavVisible={setSideNavVisible} sideNavVisible={sideNavVisible} />
           <SideNav setSideNavVisible={setSideNavVisible} sideNavVisible={sideNavVisible} />
-          <Background />
           <WorldGlobe />
         </>
       )}

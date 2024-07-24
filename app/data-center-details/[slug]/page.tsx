@@ -1,11 +1,58 @@
-import Background from "@/components/Background";
 import { BsLightningChargeFill } from "react-icons/bs";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import DonutPieChart from "@/components/DonutPieChart";
 import RegularPieChart from "@/components/RegularPieChart";
+import { ChartConfig } from "@/components/ui/chart";
 
 const Page = () => {
+  const chartConfig = {
+    Total: {
+      label: "Total",
+    },
+    racks: {
+      label: "Racks",
+      color: "#172554",
+    },
+    storage: {
+      label: "Storage",
+      color: "#1e40af",
+    },
+    network_devices: {
+      label: "Network Devices",
+      color: "#2563eb",
+    },
+    cooling: {
+      label: "cooling",
+      color: "#2dabff",
+    },
+  } satisfies ChartConfig;
+  const regularChartData = [
+    { name: "Racks", Total: 30, fill: "#172554" },
+    { name: "Storage", Total: 25, fill: "#1e40af" },
+    { name: "Network Devices", Total: 26, fill: "#2563eb" },
+    { name: "Cooling System", Total: 19, fill: "#2dabff" },
+  ];
+
+  const pieChartConfig = {
+    Total: {
+      label: "Total",
+    },
+    IT: {
+      label: "IT Equipment",
+      color: "#2dabff",
+    },
+    Non_IT: {
+      label: "Non IT Equipment",
+      color: "#102E41",
+    },
+  } satisfies ChartConfig;
+
+  const pieChartData = [
+    { type: "IT Equipment", Total: 115, fill: "var(--color-IT)" },
+    { type: "Non IT Equipment", Total: 100, fill: "var(--color-Non_IT)" },
+  ];
+
   return (
     <div className="mt-[6.5%]">
       <div className="w-full flex items-center justify-center flex-col">
@@ -21,8 +68,8 @@ const Page = () => {
 
       <div className="flex items-center justify-between mt-5 w-[85vw] h-[55vh] mx-auto">
         <div className="w-[49.5%] h-full flex items-center justify-between flex-col">
-          <DonutPieChart />
-          <RegularPieChart />
+          <DonutPieChart ChartConfig={pieChartConfig} chartData={pieChartData} title="Power Usage" />
+          <RegularPieChart ChartConfig={chartConfig} title="Non IT Equipment" chartData={regularChartData} />
         </div>
         <PowerUsageEffectiveness />
       </div>
@@ -34,8 +81,6 @@ const Page = () => {
         <BottomText amount="$3,600" text="Bugdeted power cost" color="text-white" />
         <BottomText amount="$4,160" text="Actual power cost" color="text-red-600" />
       </div>
-
-      <Background />
     </div>
   );
 };
