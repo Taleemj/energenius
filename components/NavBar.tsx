@@ -1,3 +1,4 @@
+"use client";
 import { FC } from "react";
 import { BsLightningChargeFill } from "react-icons/bs";
 import { FiMenu } from "react-icons/fi";
