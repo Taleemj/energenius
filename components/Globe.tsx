@@ -86,11 +86,12 @@ const WorldGlobe: FC<Props> = ({ centerCoordinates }) => {
   }, [params, geoLocations, globeRef.current]);
 
   const locationClick = (d: any) => {
-    router.push(d.properties.href);
-
     if (globeRef.current) {
       globeRef.current.pointOfView({ lat: d.lat, lng: d.lng, altitude: 0.7 }, 600);
     }
+    setTimeout(() => {
+      router.push(d.properties.href);
+    }, 800);
   };
 
   useEffect(() => {
