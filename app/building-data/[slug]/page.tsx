@@ -77,7 +77,7 @@ const Page = () => {
   return (
     <div className="mt-[6.5%] relative">
       <div
-        onClick={() => router.back()}
+        onClick={() => router.push("/")}
         className="absolute top-0 left-[3%] cursor-pointer text-text-gray hover:text-white transition-all duration-300"
       >
         <FaArrowLeft className=" text-[22px]" />
