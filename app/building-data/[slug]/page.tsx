@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { ChartConfig } from "@/components/ui/chart";
 import { useEffect } from "react";
+import { FaArrowLeft } from "react-icons/fa";
 
 const Page = () => {
   const params = useParams();
@@ -74,7 +75,13 @@ const Page = () => {
   ];
 
   return (
-    <div className="mt-[6.5%]">
+    <div className="mt-[6.5%] relative">
+      <div
+        onClick={() => router.back()}
+        className="absolute top-0 left-[3%] cursor-pointer text-text-gray hover:text-white transition-all duration-300"
+      >
+        <FaArrowLeft className=" text-[22px]" />
+      </div>
       <div className="w-full flex items-center justify-center flex-col">
         <h1 className="text-5xl font-bold text-white mb-1">Building {params.slug}</h1>
         <p className="text-text-gray flex items-center gap-x-3 gap-y-1 mt-[10px] flex-wrap w-[40%]">
