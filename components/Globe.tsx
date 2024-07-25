@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, FC } from "react";
 import Globe from "react-globe.gl";
 import { MeshPhongMaterial } from "three";
 import { useRouter } from "next/navigation";
@@ -7,7 +7,10 @@ import { GlobeMethods } from "react-globe.gl";
 import { FaCompressArrowsAlt } from "react-icons/fa";
 import { useParams } from "next/navigation";
 
-const WorldGlobe = () => {
+interface Props {
+  centerCoordinates: [number, number];
+}
+const WorldGlobe: FC<Props> = ({ centerCoordinates }) => {
   const params = useParams();
   const router = useRouter();
   const globeRef = useRef<GlobeMethods | undefined>();
@@ -89,6 +92,12 @@ const WorldGlobe = () => {
       globeRef.current.pointOfView({ lat: d.lat, lng: d.lng, altitude: 0.7 }, 600);
     }
   };
+
+  useEffect(() => {
+    if (centerCoordinates[0] !== 0 && centerCoordinates[1] !== 0) {
+      globeRef.current?.pointOfView({ lat: centerCoordinates[1], lng: centerCoordinates[0], altitude: 0.7 }, 600);
+    }
+  }, [centerCoordinates, globeRef.current]);
 
   return (
     <div className="fixed w-[100vw] h-[100vh] z-[-1] flex items-start justify-start top-[10px] left-0">

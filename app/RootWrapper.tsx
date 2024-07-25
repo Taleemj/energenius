@@ -10,6 +10,7 @@ const WorldGlobe = dynamic(() => import("@/components/Globe"), { ssr: false });
 function RootWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sideNavVisible, setSideNavVisible] = useState(false);
+  const [globeCenterCoOrdinates, setGlobeCenterCoOrdinates] = useState<[number, number]>([0, 0]);
 
   const isDataCenterDetails =
     pathname.includes("/data-center-details/") || pathname.includes("/building-data/") ? true : false;
@@ -32,8 +33,13 @@ function RootWrapper({ children }: { children: React.ReactNode }) {
       {!isDataCenterDetails && (
         <>
           <NavBar showWarningAlerts={true} setSideNavVisible={setSideNavVisible} sideNavVisible={sideNavVisible} />
-          <SideNav setSideNavVisible={setSideNavVisible} sideNavVisible={sideNavVisible} />
-          <WorldGlobe />
+          <SideNav
+            globeCenterCoOrdinates={globeCenterCoOrdinates}
+            setGlobeCenterCoOrdinates={setGlobeCenterCoOrdinates}
+            setSideNavVisible={setSideNavVisible}
+            sideNavVisible={sideNavVisible}
+          />
+          <WorldGlobe centerCoordinates={globeCenterCoOrdinates} />
         </>
       )}
       {children}

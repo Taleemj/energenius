@@ -15,9 +15,16 @@ import NavLink from "./NavLink";
 interface Props {
   setSideNavVisible: React.Dispatch<React.SetStateAction<boolean>>;
   sideNavVisible: boolean;
+  setGlobeCenterCoOrdinates: React.Dispatch<React.SetStateAction<[number, number]>>;
+  globeCenterCoOrdinates: [number, number];
 }
 
-const SideNav: FC<Props> = ({ setSideNavVisible, sideNavVisible }) => {
+const SideNav: FC<Props> = ({
+  setSideNavVisible,
+  sideNavVisible,
+  globeCenterCoOrdinates,
+  setGlobeCenterCoOrdinates,
+}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
 
   useEffect(() => {
@@ -50,6 +57,8 @@ const SideNav: FC<Props> = ({ setSideNavVisible, sideNavVisible }) => {
               {sideNavItems.map((item, i) => (
                 <NavLink
                   setSideNavVisible={setSideNavVisible}
+                  globeCenterCoOrdinates={globeCenterCoOrdinates}
+                  setGlobeCenterCoOrdinates={setGlobeCenterCoOrdinates}
                   key={i}
                   href={item.href}
                   textColor={item.color}
