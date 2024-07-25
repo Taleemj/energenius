@@ -93,7 +93,7 @@ const WorldGlobe: FC<Props> = ({ centerCoordinates, setCenterCoordinates }) => {
     }
     setTimeout(() => {
       router.push(d.properties.href);
-    }, 800);
+    }, 700);
   };
 
   useEffect(() => {

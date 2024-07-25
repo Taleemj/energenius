@@ -40,7 +40,7 @@ const NavLink: FC<Props> = ({
         });
         setTimeout(() => {
           router.push(href);
-        }, 800);
+        }, 700);
       } else {
         setGlobeCenterCoOrdinates([-99, 38]);
         router.push(href);
