@@ -10,7 +10,7 @@ const WorldGlobe = dynamic(() => import("@/components/Globe"), { ssr: false });
 function RootWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sideNavVisible, setSideNavVisible] = useState(false);
-  const [globeCenterCoOrdinates, setGlobeCenterCoOrdinates] = useState<[number, number]>([0, 0]);
+  const [globeCenterCoOrdinates, setGlobeCenterCoOrdinates] = useState<[number, number]>([-99, 38]);
 
   const isDataCenterDetails =
     pathname.includes("/data-center-details/") || pathname.includes("/building-data/") ? true : false;

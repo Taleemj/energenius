@@ -42,7 +42,7 @@ const NavLink: FC<Props> = ({
           router.push(href);
         }, 800);
       } else {
-        setGlobeCenterCoOrdinates([0, 0]);
+        setGlobeCenterCoOrdinates([-99, 38]);
         router.push(href);
       }
     } else {
@@ -67,6 +67,7 @@ const NavLink: FC<Props> = ({
           )
         );
     }
+    setGlobeCenterCoOrdinates([-99, 38]);
   }, []);
 
   return (

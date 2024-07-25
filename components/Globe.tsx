@@ -89,7 +89,7 @@ const WorldGlobe: FC<Props> = ({ centerCoordinates, setCenterCoordinates }) => {
   const locationClick = (d: any) => {
     if (globeRef.current) {
       globeRef.current.pointOfView({ lat: d.lat, lng: d.lng, altitude: 0.7 }, 600);
-      setCenterCoordinates([d.lng, d.lat]);
+      // setCenterCoordinates([d.lng, d.lat]);
     }
     setTimeout(() => {
       router.push(d.properties.href);
@@ -97,8 +97,10 @@ const WorldGlobe: FC<Props> = ({ centerCoordinates, setCenterCoordinates }) => {
   };
 
   useEffect(() => {
-    if (centerCoordinates[0] !== 0 && centerCoordinates[1] !== 0) {
+    if (centerCoordinates[0] !== -99 && centerCoordinates[1] !== 38) {
       globeRef.current?.pointOfView({ lat: centerCoordinates[1], lng: centerCoordinates[0], altitude: 0.7 }, 600);
+    } else {
+      globeRef.current?.pointOfView({ lat: 38, lng: -99, altitude: 3.5 }, 600);
     }
   }, [centerCoordinates, globeRef.current]);
 
