@@ -9,8 +9,9 @@ import { useParams } from "next/navigation";
 
 interface Props {
   centerCoordinates: [number, number];
+  setCenterCoordinates: React.Dispatch<React.SetStateAction<[number, number]>>;
 }
-const WorldGlobe: FC<Props> = ({ centerCoordinates }) => {
+const WorldGlobe: FC<Props> = ({ centerCoordinates, setCenterCoordinates }) => {
   const params = useParams();
   const router = useRouter();
   const globeRef = useRef<GlobeMethods | undefined>();
@@ -88,6 +89,7 @@ const WorldGlobe: FC<Props> = ({ centerCoordinates }) => {
   const locationClick = (d: any) => {
     if (globeRef.current) {
       globeRef.current.pointOfView({ lat: d.lat, lng: d.lng, altitude: 0.7 }, 600);
+      setCenterCoordinates([d.lng, d.lat]);
     }
     setTimeout(() => {
       router.push(d.properties.href);

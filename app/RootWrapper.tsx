@@ -39,7 +39,7 @@ function RootWrapper({ children }: { children: React.ReactNode }) {
             setSideNavVisible={setSideNavVisible}
             sideNavVisible={sideNavVisible}
           />
-          <WorldGlobe centerCoordinates={globeCenterCoOrdinates} />
+          <WorldGlobe centerCoordinates={globeCenterCoOrdinates} setCenterCoordinates={setGlobeCenterCoOrdinates} />
         </>
       )}
       {children}
