@@ -20,7 +20,9 @@ const NavLink: FC<Props> = ({ href, textColor, title, time, setSideNavVisible })
     >
       <TfiDownload className="mt-2" />
       <div className="ml-2">
-        <h4 className={`text-[14px] ${textColor}`}>{title}</h4>
+        <h4 style={{ color: textColor }} className={`text-[14px]`}>
+          {title}
+        </h4>
         <p className="text-text-gray">{time}</p>
       </div>
     </Link>
