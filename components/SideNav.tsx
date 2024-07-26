@@ -11,6 +11,7 @@ import {
 import { Separator } from "./ui/separator";
 import { sideNavItems } from "@/data";
 import NavLink from "./NavLink";
+import { useRouter, usePathname } from "next/navigation";
 
 interface Props {
   setSideNavVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,6 +27,8 @@ const SideNav: FC<Props> = ({
   setGlobeCenterCoOrdinates,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (window.innerWidth < 768) {

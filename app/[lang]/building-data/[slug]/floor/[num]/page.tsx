@@ -18,13 +18,10 @@ import { FaArrowLeft } from "react-icons/fa";
 
 const Page = () => {
   const params = useParams();
-
   const router = useRouter();
-
   useEffect(() => {
     console.log("params", params);
   }, []);
-
   const NonHVAC = {
     Total: {
       label: "Total",
@@ -77,13 +74,14 @@ const Page = () => {
   return (
     <div className="mt-[6.5%] relative">
       <div
-        onClick={() => router.push("/")}
+        onClick={() => router.push(`/${params.lang}`)}
         className="absolute top-0 left-[3%] cursor-pointer text-text-gray hover:text-white transition-all duration-300"
       >
         <FaArrowLeft className=" text-[22px]" />
       </div>
       <div className="w-full flex items-center justify-center flex-col">
         <h1 className="text-5xl font-bold text-white mb-1">Building {params.slug}</h1>
+        <p>Floor {params.num}</p>
         <p className="text-text-gray flex items-center gap-x-3 gap-y-1 mt-[10px] flex-wrap w-[40%]">
           <span>Total Energy consumption:3000KW</span>
           <span>No. of floors:28</span>
@@ -93,17 +91,17 @@ const Page = () => {
           <span>CO2 Emissions:280 tons</span>
         </p>
         <Select
-          defaultValue="All Floors"
-          onValueChange={(v) => {
-            if (v === "All Floors") {
-              router.push(`/building-data/${params.slug}`);
+          defaultValue={`Floor ${params.num}`}
+          onValueChange={(value) => {
+            if (value === "All Floors") {
+              router.push(`/${params.lang}/building-data/${params.slug}`);
             } else {
-              router.push(`/building-data/${params.slug}/floor/${v.split(" ")[1]}`);
+              router.push(`/${params.lang}/building-data/${params.slug}/floor/${value.split(" ")[1]}`);
             }
           }}
         >
           <SelectTrigger className="w-[20%] bg-button-blue text-bright-blue mt-1">
-            <SelectValue defaultValue={"All Floors"} placeholder="All Floors" defaultChecked />
+            <SelectValue defaultValue={`Floor ${params.num}`} placeholder={`Floor ${params.num}`} defaultChecked />
           </SelectTrigger>
           <SelectContent className="bg-dark-blue border-2 border-bright-blue">
             <SelectGroup className=" bg-dark-blue">

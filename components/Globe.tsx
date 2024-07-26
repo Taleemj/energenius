@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { GlobeMethods } from "react-globe.gl";
 import { FaCompressArrowsAlt } from "react-icons/fa";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface Props {
   centerCoordinates: [number, number];
@@ -14,6 +15,7 @@ interface Props {
 const WorldGlobe: FC<Props> = ({ centerCoordinates, setCenterCoordinates }) => {
   const params = useParams();
   const router = useRouter();
+  const t = useTranslations("sideNav");
   const globeRef = useRef<GlobeMethods | undefined>();
   const [windowWidth, setWindowWidth] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
@@ -92,7 +94,7 @@ const WorldGlobe: FC<Props> = ({ centerCoordinates, setCenterCoordinates }) => {
       // setCenterCoordinates([d.lng, d.lat]);
     }
     setTimeout(() => {
-      router.push(d.properties.href);
+      router.push(`${params.lang}/${d.properties.href}`);
     }, 700);
   };
 
@@ -132,7 +134,7 @@ const WorldGlobe: FC<Props> = ({ centerCoordinates, setCenterCoordinates }) => {
         htmlElementsData={geoLocations ? geoLocations : []}
         htmlElement={(d: any) => {
           const el = document.createElement("div");
-          el.innerHTML = `${markerSvg} <p>${d.properties.name}</p>`;
+          el.innerHTML = `${markerSvg} <p>${t(`${d.properties.name}`)}</p>`;
           el.classList.add("marker");
           el.style.width = `${d.size}px`;
           // @ts-ignore

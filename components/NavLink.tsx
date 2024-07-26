@@ -1,9 +1,8 @@
 "use client";
 import { FC, useEffect, useState } from "react";
-
 import { TfiDownload } from "react-icons/tfi";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface Props {
   href: string;
@@ -26,28 +25,31 @@ const NavLink: FC<Props> = ({
   const pathname = usePathname();
   const router = useRouter();
   const [geoLocations, setGeoLocations] = useState<any>(null);
+  const params = useParams();
+  const t = useTranslations("sideNav");
 
   const handleLinkClick = () => {
     window.innerWidth < 768 && setSideNavVisible(false);
 
-    if (pathname === "/") {
-      const found: boolean = geoLocations.some((d: any) => d.properties.name === title);
-      if (found) {
-        geoLocations.map((d: any) => {
-          if (d.properties.name === title) {
-            setGlobeCenterCoOrdinates([d.lng, d.lat]);
-          }
-        });
-        setTimeout(() => {
-          router.push(href);
-        }, 700);
-      } else {
-        setGlobeCenterCoOrdinates([-99, 38]);
-        router.push(href);
-      }
+    // if (pathname === "/") {
+    const found: boolean = geoLocations.some((d: any) => d.properties.name === title);
+    console.log("found", found);
+    if (found) {
+      geoLocations.map((d: any) => {
+        if (d.properties.name === title) {
+          setGlobeCenterCoOrdinates([d.lng, d.lat]);
+        }
+      });
+      setTimeout(() => {
+        router.push(`${params.lang}/${href}`);
+      }, 700);
     } else {
-      router.push(href);
+      setGlobeCenterCoOrdinates([-99, 38]);
+      router.push(`${params.lang}/${href}`);
     }
+    // } else {
+    // router.push(`${params.lang}/${href}`);
+    // }
   };
 
   useEffect(() => {
@@ -75,7 +77,7 @@ const NavLink: FC<Props> = ({
       <TfiDownload className="mt-2" />
       <div className="ml-2">
         <h4 style={{ color: textColor }} className={`text-[14px]`}>
-          {title}
+          {t(`${title}`)}
         </h4>
         <p className="text-text-gray">{time}</p>
       </div>
