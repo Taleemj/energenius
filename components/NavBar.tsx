@@ -28,6 +28,15 @@ const NavBar: FC<Props> = ({ showWarningAlerts, setSideNavVisible, sideNavVisibl
   const params = useParams();
   const pathname = usePathname();
   // const [currentLocale, setCurrentLocale] = useState<"en-US" | "fr">();
+  const [hours, setHours] = useState<string>(String(new Date().getHours()));
+  const [time, setTime] = useState<string>(String(new Date().getMinutes()));
+
+  useEffect(() => {
+    setInterval(() => {
+      setHours(String(new Date().getHours()));
+      setTime(String(new Date().getMinutes()));
+    }, 1000);
+  }, []);
 
   // useEffect(() => {
   //     setCurrentLocale(params.lang);
@@ -53,7 +62,10 @@ const NavBar: FC<Props> = ({ showWarningAlerts, setSideNavVisible, sideNavVisibl
       </Link>
 
       <h2 className="max-w-[32%] text-[1rem] md:text-[1.3rem] font-bold">
-        10:52 <span className="text-text-gray font-normal">EST</span>
+        {hours}:{`${new Date().getMinutes() < 9 ? "0" : ""}${time}`}{" "}
+        <span className="text-text-gray font-normal">
+          {String(new Date().toLocaleTimeString("en-us", { timeZoneName: "short" }).split(" ")[2])}
+        </span>
       </h2>
 
       <div className="flex items-center justify-between">
