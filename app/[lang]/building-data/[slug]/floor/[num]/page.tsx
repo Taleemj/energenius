@@ -82,12 +82,11 @@ const Page = () => {
       <div className="w-full flex items-center justify-center flex-col">
         <h1 className="text-5xl font-bold text-white mb-1">Building {params.slug}</h1>
         <p>Floor {params.num}</p>
-        <p className="text-text-gray flex items-center gap-x-3 gap-y-1 mt-[10px] flex-wrap w-[40%]">
+        <p className="text-text-gray flex items-center justify-center gap-x-3 gap-y-1 mt-[10px] flex-wrap w-[40%]">
           <span>Total Energy consumption:3000KW</span>
           <span>No. of floors:28</span>
           <span>No. of HVAC:22</span>
           <span>PPD Levels:40%</span>
-          <span>CO2 Emissions:280 tons</span>
           <span>CO2 Emissions:280 tons</span>
         </p>
         <Select
