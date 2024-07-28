@@ -13,12 +13,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ChartConfig } from "@/components/ui/chart";
-import { useEffect } from "react";
+import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
 
 const Page = () => {
   const params = useParams();
-
   const router = useRouter();
 
   const NonHVAC = {
@@ -142,6 +143,7 @@ const Page = () => {
 export default Page;
 
 const PowerUsageEffectiveness = () => {
+  const [dateValue, setDateValue] = useState<string | string[]>();
   const data: {
     text: string;
     value: string;
@@ -176,12 +178,40 @@ const PowerUsageEffectiveness = () => {
   return (
     <Card className="bg-dark-blue w-[49.5%] h-full pt-5 pl-1">
       <CardContent>
-        <h1 className="text-[16px] text-white mb-2 font-bold">HVAC Efficiency Metrics</h1>
-        {data
-          .filter((item) => item.type === "metric")
-          .map((item) => (
-            <PowerUsageCards key={item.text} text={item.text} value={item.value} />
-          ))}
+        <h1 className="text-xl text-white mb-2 font-bold">Active period between 1 st June 2022 - 31th August</h1>
+        <DatePicker
+          showTime
+          onChange={(value, dateString) => {
+            setDateValue(dateString);
+          }}
+          defaultValue={dayjs("2022-06-01", "YYYY-MM-DD")}
+          minDate={dayjs("2022-06-01", "YYYY-MM-DD")}
+          maxDate={dayjs("2022-08-31", "YYYY-MM-DD")}
+          className="w-full bg-dark-blue border-[1px] border-border py-1 text-white hover:text-black"
+        />
+        <div className="flex items-end justify-between my-4">
+          <div className="w-[28%] h-full flex flex-col gap-1 text-[14px]">
+            <h2>Energy consumption</h2>
+            <h2>PPD Level</h2>
+            <h2>CO2</h2>
+          </div>
+          <div className="w-[70%]">
+            <div className="flex items-center text-[14px] justify-between">
+              <h2 className="w-[33%]">Baseline</h2>
+              <h2 className="w-[33%]">RL</h2>
+              <h2 className="w-[33%]">Efficient Rate</h2>
+            </div>
+            <div>
+              <ActivePeriodUsageValues baseline="100%" rl="100%" efficient="100%" />
+              <ActivePeriodUsageValues baseline="100%" rl="100%" efficient="100%" />
+              <ActivePeriodUsageValues baseline="100%" rl="100%" efficient="100%" />
+            </div>
+          </div>
+        </div>
+
+        <h1 className="text-[16px] text-white mb-2 bg-[#1a2736] px-4 py-1 mt-4 w-[80%] mx-auto text-center">
+          {dateValue ? String(dateValue) : String(dayjs("2022-06-01", "YYYY-MM-DD"))}
+        </h1>
 
         <h1 className="text-xl text-white mb-2 font-bold mt-4">Alerts</h1>
         {data
@@ -199,6 +229,16 @@ const PowerUsageCards = ({ text, value }: { text: string; value: string }) => {
     <div className="flex items-center justify-between w-full text-[#8e9092] mb-2">
       <p className="w-[86%] bg-[#1a2736] px-4 py-2 text-sm">{text}</p>
       <p className="w-[12%] bg-[#1a2736] px-4 py-2 text-sm">{value}</p>
+    </div>
+  );
+};
+
+const ActivePeriodUsageValues = ({ baseline, rl, efficient }: { baseline: string; rl: string; efficient: string }) => {
+  return (
+    <div className="flex items-center text-text-gray gap-1 justify-between">
+      <h2 className="w-[33%]">{baseline}</h2>
+      <h2 className="w-[33%]">{rl}</h2>
+      <h2 className="w-[33%]">{efficient}</h2>
     </div>
   );
 };

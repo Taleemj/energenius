@@ -104,5 +104,11 @@
       color: #fff;
       font-weight: 500;
     }
+    .ant-picker-input svg {
+      color: #fff;
+    }
+    .ant-picker-input:hover svg {
+      color: #2dabff;
+    }
   }
 }
