@@ -143,7 +143,7 @@ const Page = () => {
 export default Page;
 
 const PowerUsageEffectiveness = () => {
-  const [dateValue, setDateValue] = useState<string | string[]>();
+  const [dateValue, setDateValue] = useState<string | string[]>("2022-06-01 00:00");
   const data: {
     text: string;
     value: string;
@@ -210,7 +210,7 @@ const PowerUsageEffectiveness = () => {
         </div>
 
         <h1 className="text-[16px] text-white mb-2 bg-[#1a2736] px-4 py-1 mt-4 w-[80%] mx-auto text-center">
-          {dateValue ? String(dateValue) : String(dayjs("2022-06-01", "YYYY-MM-DD"))}
+          {dateValue}
         </h1>
 
         <h1 className="text-xl text-white mb-2 font-bold mt-6">Alerts</h1>
