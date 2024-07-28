@@ -178,7 +178,7 @@ const PowerUsageEffectiveness = () => {
   return (
     <Card className="bg-dark-blue w-[49.5%] h-full pt-5 pl-1">
       <CardContent>
-        <h1 className="text-xl text-white mb-2 font-bold">Active period between 1 st June 2022 - 31th August</h1>
+        <h1 className="text-xl text-white mb-2 font-bold">Active period between 1 st June - 31th August 2022</h1>
         <DatePicker
           showTime
           onChange={(value, dateString) => {
@@ -213,7 +213,7 @@ const PowerUsageEffectiveness = () => {
           {dateValue ? String(dateValue) : String(dayjs("2022-06-01", "YYYY-MM-DD"))}
         </h1>
 
-        <h1 className="text-xl text-white mb-2 font-bold mt-4">Alerts</h1>
+        <h1 className="text-xl text-white mb-2 font-bold mt-6">Alerts</h1>
         {data
           .filter((item) => item.type === "alert")
           .map((item) => (
