@@ -146,7 +146,7 @@ const Page = () => {
               amount={apiData?.energyConsumption[1][0].toFixed(2) + `(${apiData?.energyConsumption[1][1].toFixed(2)})`}
               text="Acutal Power Usage"
               color={
-                apiData?.energyConsumption[0][1] > apiData?.energyConsumption[0][0] ? "text-red-600" : "text-green-600"
+                apiData?.energyConsumption[0][0] < apiData?.energyConsumption[1][0] ? "text-red-600" : "text-green-600"
               }
             />
             <BottomText
@@ -158,7 +158,7 @@ const Page = () => {
               amount={"$" + apiData?.energyConsumption[1][0].toFixed(2)}
               text="Actual power cost"
               color={
-                apiData?.energyConsumption[0][1] > apiData?.energyConsumption[0][0] ? "text-red-600" : "text-green-600"
+                apiData?.energyConsumption[0][0] < apiData?.energyConsumption[1][0] ? "text-red-600" : "text-green-600"
               }
             />
           </>
