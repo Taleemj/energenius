@@ -44,7 +44,7 @@ const NavBar: FC<Props> = ({ showWarningAlerts, setSideNavVisible, sideNavVisibl
       </Link>
 
       <h2 className="max-w-[32%] text-[1rem] md:text-[1.3rem] font-bold">
-        {hours}:{`${Number(time) < 9 ? "0" : ""}${time}`}{" "}
+        {hours.length == 1 ? `0${hours}` : hours}:{time.length == 1 ? `0${time}` : time}{" "}
         <span className="text-text-gray font-normal">
           {String(new Date().toLocaleTimeString("en-us", { timeZoneName: "short" }).split(" ")[2])}
         </span>
