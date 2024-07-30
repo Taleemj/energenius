@@ -24,7 +24,7 @@ import axios from "axios";
 const Page = () => {
   const params = useParams();
   const router = useRouter();
-  const [apiData, setApiData] = useState<any>();
+  const [apiData, setApiData] = useState<any>(null);
 
   const NonHVAC = {
     Total: {
@@ -86,11 +86,11 @@ const Page = () => {
       <div className="w-full flex items-center justify-center flex-col">
         <h1 className="text-5xl font-bold text-white mb-1">Building {params.slug}</h1>
         <p className="text-text-gray flex items-center justify-center gap-x-3 gap-y-1 mt-[10px] flex-wrap w-[40%]">
-          <span>Total Energy consumption:3000KW</span>
+          <span>Total Energy consumption:153KW</span>
           <span>No. of floors:28</span>
           <span>No. of HVAC:22</span>
-          <span>PPD Levels:40%</span>
-          <span>CO2 PPM: 12</span>
+          <span>PPD Levels:3.7%</span>
+          <span>CO2 PPM: 453</span>
         </p>
         <Select
           defaultValue="All Floors"
@@ -135,30 +135,34 @@ const Page = () => {
         <h1 className="text-[18px] absolute top-[5px] font-bold left-1/2 transform -translate-x-1/2 text-white">
           Energy Costs Comparision
         </h1>
-        <BottomText
-          amount={apiData?.energyConsumption[0][0].toFixed(2) + `(${apiData?.energyConsumption[0][1].toFixed(2)})`}
-          text="Bugdeted Power Usage"
-          color="text-white"
-        />
-        <BottomText
-          amount={apiData?.energyConsumption[1][0].toFixed(2) + `(${apiData?.energyConsumption[1][1].toFixed(2)})`}
-          text="Acutal Power Usage"
-          color={
-            apiData?.energyConsumption[0][1] > apiData?.energyConsumption[0][0] ? "text-red-600" : "text-green-600"
-          }
-        />
-        <BottomText
-          amount={"$" + apiData?.energyConsumption[0][0].toFixed(2) * 1}
-          text="Bugdeted power cost"
-          color="text-white"
-        />
-        <BottomText
-          amount={"$" + apiData?.energyConsumption[0][1].toFixed(2)}
-          text="Actual power cost"
-          color={
-            apiData?.energyConsumption[0][1] > apiData?.energyConsumption[0][0] ? "text-red-600" : "text-green-600"
-          }
-        />
+        {apiData !== null && (
+          <>
+            <BottomText
+              amount={apiData?.energyConsumption[0][0].toFixed(2) + `(${apiData?.energyConsumption[0][1].toFixed(2)})`}
+              text="Bugdeted Power Usage"
+              color="text-white"
+            />
+            <BottomText
+              amount={apiData?.energyConsumption[1][0].toFixed(2) + `(${apiData?.energyConsumption[1][1].toFixed(2)})`}
+              text="Acutal Power Usage"
+              color={
+                apiData?.energyConsumption[0][1] > apiData?.energyConsumption[0][0] ? "text-red-600" : "text-green-600"
+              }
+            />
+            <BottomText
+              amount={"$" + apiData?.energyConsumption[0][0].toFixed(2) * 1}
+              text="Bugdeted power cost"
+              color="text-white"
+            />
+            <BottomText
+              amount={"$" + apiData?.energyConsumption[1][0].toFixed(2)}
+              text="Actual power cost"
+              color={
+                apiData?.energyConsumption[0][1] > apiData?.energyConsumption[0][0] ? "text-red-600" : "text-green-600"
+              }
+            />
+          </>
+        )}
       </Card>
     </div>
   );
@@ -211,6 +215,7 @@ const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApi
   ]);
   const [numberOfDays, setNumberOfDays] = useState("");
   const [dropDownPeriodValue, setDropDownPeriodValue] = useState("1");
+  const [initalRender, setInitailRender] = useState(true);
   const inputRef = useRef<InputRef>(null);
 
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -246,7 +251,8 @@ const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApi
   };
 
   useEffect(() => {
-    if (dateValue.length > 0) {
+    setInitailRender(false);
+    if (dateValue.length > 0 && initalRender !== true) {
       getActivePeriodValues();
     }
   }, [dateValue, dropDownPeriodValue]);
@@ -268,14 +274,18 @@ const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApi
             onChange={(value, dateString) => {
               setDateValue(dateString);
             }}
-            defaultValue={dayjs("2022-06-01 14:00", "YYYY-MM-DD HH:mm")}
-            minDate={dayjs("2022-06-01", "YYYY-MM-DD")}
+            placeholder="Select date"
+            minDate={
+              dropDownPeriodValue == "7"
+                ? dayjs("2022-06-01", "YYYY-MM-DD").add(7, "day")
+                : dayjs("2022-06-01", "YYYY-MM-DD")
+            }
             maxDate={dayjs("2022-08-31", "YYYY-MM-DD")}
             className="w-[60%] bg-dark-blue border-[1px] border-border py-1 text-white hover:text-black"
           />
           <AntSelect
             options={selectOptions}
-            defaultValue={"Daily"}
+            defaultValue={"select period"}
             onChange={(value) => {
               if (value === "daily") {
                 setDropDownPeriodValue("1");
@@ -307,48 +317,51 @@ const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApi
             )}
           />
         </div>
-        <div className="flex items-end justify-between my-4">
-          <div className="w-[28%] h-full flex flex-col gap-1 text-[14px]">
-            <h2>Energy consumption(KW)</h2>
-            <h2>PPD Level(%)</h2>
-            <h2>CO2(PPM)</h2>
-          </div>
-          <div className="w-[70%]">
-            <div className="flex items-center text-[14px] justify-between">
-              <h2 className="w-[33%]">Baseline</h2>
-              <h2 className="w-[33%]">RL</h2>
-              <h2 className="w-[33%]">Efficient Rate</h2>
+        {apiData !== null && (
+          <>
+            <div className="flex items-end justify-between my-4">
+              <div className="w-[28%] h-full flex flex-col gap-1 text-[14px]">
+                <h2>Energy consumption(W)</h2>
+                <h2>PPD Level(%)</h2>
+                <h2>CO2(PPM)</h2>
+              </div>
+              <div className="w-[70%]">
+                <div className="flex items-center text-[14px] justify-between">
+                  <h2 className="w-[33%]">Baseline</h2>
+                  <h2 className="w-[33%]">RL</h2>
+                  <h2 className="w-[33%]">Efficient Rate</h2>
+                </div>
+                <div>
+                  <ActivePeriodUsageValues
+                    baseline={String((apiData?.baseline[0] * 1000).toFixed(2))}
+                    rl={String((apiData?.RL[0] * 1000).toFixed(2))}
+                    efficient={apiData?.rate[0].toFixed(2)}
+                  />
+                  <ActivePeriodUsageValues
+                    baseline={apiData?.baseline[1].toFixed(2)}
+                    rl={apiData?.RL[1].toFixed(2)}
+                    efficient={apiData?.rate[1].toFixed(2)}
+                  />
+                  <ActivePeriodUsageValues
+                    baseline={apiData?.baseline[2].toFixed(2)}
+                    rl={apiData?.RL[2].toFixed(2)}
+                    efficient={apiData?.rate[2].toFixed(2)}
+                  />
+                </div>
+              </div>
             </div>
-            <div>
-              <ActivePeriodUsageValues
-                baseline={apiData?.baseline[0]?.toFixed(2)}
-                rl={apiData?.RL[0]?.toFixed(2)}
-                efficient={apiData?.rate[0]?.toFixed(2)}
-              />
-              <ActivePeriodUsageValues
-                baseline={apiData?.baseline[1]?.toFixed(2)}
-                rl={apiData?.RL[1]?.toFixed(2)}
-                efficient={apiData?.rate[1]?.toFixed(2)}
-              />
-              <ActivePeriodUsageValues
-                baseline={apiData?.baseline[2]?.toFixed(2)}
-                rl={apiData?.RL[2]?.toFixed(2)}
-                efficient={apiData?.rate[2]?.toFixed(2)}
-              />
-            </div>
-          </div>
-        </div>
-
-        <h1 className="text-[16px] text-white mb-2 bg-[#1a2736] px-4 py-1 mt-4 w-[80%] mx-auto text-center">
-          {dateValue.includes("2022-06-01")
-            ? //@ts-ignore
-              `${dateValue} - ${dayjs(dateValue).add(Number(dropDownPeriodValue), "day").format("YYYY-MM-DD")}`
-            : // @ts-ignore
-              `${dayjs(dateValue).subtract(Number(dropDownPeriodValue), "day").format("YYYY-MM-DD")} ${
-                // @ts-ignore
-                dateValue.split(" ")[1]
-              } - ${dateValue}`}
-        </h1>
+            <h1 className="text-[16px] text-white mb-2 bg-[#1a2736] px-4 py-1 mt-4 w-[80%] mx-auto text-center">
+              {dateValue.includes("2022-06-01")
+                ? //@ts-ignore
+                  `${dateValue} - ${dayjs(dateValue).add(Number(dropDownPeriodValue), "day").format("YYYY-MM-DD")}`
+                : // @ts-ignore
+                  `${dayjs(dateValue).subtract(Number(dropDownPeriodValue), "day").format("YYYY-MM-DD")} ${
+                    // @ts-ignore
+                    dateValue.split(" ")[1]
+                  } - ${dateValue}`}
+            </h1>
+          </>
+        )}
 
         <h1 className="text-xl text-white mb-2 font-bold mt-6">Alerts</h1>
         {data
