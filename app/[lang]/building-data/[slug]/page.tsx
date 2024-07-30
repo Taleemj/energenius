@@ -20,6 +20,7 @@ import type { InputRef } from "antd";
 import dayjs from "dayjs";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import LineChart from "@/components/LineChart";
 
 const Page = () => {
   const params = useParams();
@@ -119,8 +120,8 @@ const Page = () => {
         </Select>
       </div>
 
-      <div className="flex items-center justify-between mt-5 w-[85vw] h-[60vh] mx-auto">
-        <div className="w-[49.5%] h-full flex items-center justify-between flex-col">
+      <div className="flex justify-between items-stretch mt-5 w-[85vw] h-auto mx-auto">
+        <div className="w-[44%] h-[100%] flex items-center justify-between flex-col gap-5">
           <DonutPieChart
             ChartConfig={pieChartConfig}
             chartData={pieChartData}
@@ -138,7 +139,9 @@ const Page = () => {
         {apiData !== null && (
           <>
             <BottomText
-              amount={apiData?.energyConsumption[0][0].toFixed(2) + `(${apiData?.energyConsumption[0][1].toFixed(2)})`}
+              amount={
+                apiData?.energyConsumption[0][0].toFixed(2) * 1 + `(${apiData?.energyConsumption[0][1].toFixed(2)})`
+              }
               text="Bugdeted Power Usage"
               color="text-white"
             />
@@ -197,11 +200,11 @@ const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApi
       value: "12",
       type: "metric",
     },
-    {
-      text: "List of units needed maintenance",
-      value: "25",
-      type: "alert",
-    },
+    // {
+    //   text: "List of units needed maintenance",
+    //   value: "25",
+    //   type: "alert",
+    // },
   ];
   const [selectOptions, setSelectOptions] = useState([
     {
@@ -215,8 +218,9 @@ const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApi
   ]);
   const [numberOfDays, setNumberOfDays] = useState("");
   const [dropDownPeriodValue, setDropDownPeriodValue] = useState("1");
-  const [initalRender, setInitailRender] = useState(true);
   const inputRef = useRef<InputRef>(null);
+  const [lineGraphTitle, setLineGraphTitle] = useState("Energy Consumption (W)");
+  const [lineGraphData, setLineGraphData] = useState<any>([]);
 
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNumberOfDays(event.target.value);
@@ -258,7 +262,7 @@ const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApi
   }, [dateValue, dropDownPeriodValue]);
 
   return (
-    <Card className="bg-dark-blue w-[49.5%] h-full pt-5 pl-1">
+    <Card className="bg-dark-blue w-[55.5%] h-full pt-5 pl-1 px-0">
       <CardContent>
         <h1 className="text-xl text-white mb-2 font-bold">Active period between 1 st June - 31th August 2022</h1>
         <div className="w-full flex items-center justify-between">
@@ -322,9 +326,15 @@ const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApi
           <>
             <div className="flex items-end justify-between my-4">
               <div className="w-[28%] h-full flex flex-col gap-1 text-[14px]">
-                <h2>Energy consumption(W)</h2>
-                <h2>PPD Level(%)</h2>
-                <h2>CO2(PPM)</h2>
+                <h2 className="cursor-pointer" onClick={() => setLineGraphTitle("Energy Consumption (W)")}>
+                  Energy consumption(W)
+                </h2>
+                <h2 className="cursor-pointer" onClick={() => setLineGraphTitle("PPD Level(%)")}>
+                  PPD Level(%)
+                </h2>
+                <h2 className="cursor-pointer" onClick={() => setLineGraphTitle("CO2(PPM)")}>
+                  CO2(PPM)
+                </h2>
               </div>
               <div className="w-[70%]">
                 <div className="flex items-center text-[14px] justify-between">
@@ -364,12 +374,12 @@ const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApi
           </>
         )}
 
-        <h1 className="text-xl text-white mb-2 font-bold mt-6">Alerts</h1>
-        {data
-          .filter((item) => item.type === "alert")
-          .map((item) => (
-            <PowerUsageCards key={item.text} text={item.text} value={item.value} />
-          ))}
+        <LineChart title={lineGraphTitle} currentDateTime={dateValue} />
+
+        <h1 className="text-xl text-white mb-2 font-bold mt-6">HVAC Efficiency and Maintenance</h1>
+        {data.map((item) => (
+          <PowerUsageCards key={item.text} text={item.text} value={item.value} />
+        ))}
       </CardContent>
     </Card>
   );
