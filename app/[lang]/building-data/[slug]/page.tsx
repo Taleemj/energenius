@@ -364,7 +364,9 @@ const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApi
             <h1 className="text-[16px] text-white mb-2 bg-[#1a2736] px-4 py-1 mt-4 w-[80%] mx-auto text-center">
               {dateValue.includes("2022-06-01")
                 ? //@ts-ignore
-                  `${dateValue} - ${dayjs(dateValue).add(Number(dropDownPeriodValue), "day").format("YYYY-MM-DD")}`
+                  `${dateValue} - ${dayjs(dateValue).add(Number(dropDownPeriodValue), "day").format("YYYY-MM-DD")} ${
+                    String(dateValue).split(" ")[1]
+                  }`
                 : // @ts-ignore
                   `${dayjs(dateValue).subtract(Number(dropDownPeriodValue), "day").format("YYYY-MM-DD")} ${
                     // @ts-ignore
