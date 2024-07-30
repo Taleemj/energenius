@@ -4,17 +4,7 @@ import { BsLightningChargeFill } from "react-icons/bs";
 import { FiMenu } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { FaFlag } from "react-icons/fa";
 import { useRouter, useParams, usePathname } from "next/navigation";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Toggle } from "@/components/ui/toggle";
 
 interface Props {
@@ -27,7 +17,6 @@ const NavBar: FC<Props> = ({ showWarningAlerts, setSideNavVisible, sideNavVisibl
   const router = useRouter();
   const params = useParams();
   const pathname = usePathname();
-  // const [currentLocale, setCurrentLocale] = useState<"en-US" | "fr">();
   const [hours, setHours] = useState<string>(String(new Date().getHours()));
   const [time, setTime] = useState<string>(String(new Date().getMinutes()));
 
@@ -37,13 +26,6 @@ const NavBar: FC<Props> = ({ showWarningAlerts, setSideNavVisible, sideNavVisibl
       setTime(String(new Date().getMinutes()));
     }, 1000);
   }, []);
-
-  // useEffect(() => {
-  //     setCurrentLocale(params.lang);
-  //   } else {
-  //     setCurrentLocale("en-US");
-  //   }
-  // }, [params.lang]);
 
   const toogleLocales = () => {
     const newUrl = pathname.replace(`/${params.lang}`, `/${params.lang === "en-US" ? "zh" : "en-US"}`);
@@ -62,38 +44,18 @@ const NavBar: FC<Props> = ({ showWarningAlerts, setSideNavVisible, sideNavVisibl
       </Link>
 
       <h2 className="max-w-[32%] text-[1rem] md:text-[1.3rem] font-bold">
-        {hours}:{`${new Date().getMinutes() < 9 ? "0" : ""}${time}`}{" "}
+        {hours}:{`${Number(time) < 9 ? "0" : ""}${time}`}{" "}
         <span className="text-text-gray font-normal">
           {String(new Date().toLocaleTimeString("en-us", { timeZoneName: "short" }).split(" ")[2])}
         </span>
       </h2>
-
       <div className="flex items-center justify-between">
-        {/* <div className="text-[1rem] cursor-pointer bg-button-blue py-0 px-2 md:py-1 md:px-4 rounded-[3px] mr-[15px] md:mr-[20px] text-bright-blue"> */}
-        {/* <Select
-          defaultValue="All Floors"
-          onValueChange={(v) => {
-            router.push(`/${v}/`);
-          }}
-        >
-          <SelectTrigger className=" bg-button-blue text-bright-blue mt-1">
-            <SelectValue defaultValue={"en-US"} placeholder="en-US" defaultChecked />
-          </SelectTrigger>
-          <SelectContent className="bg-dark-blue border-2 border-bright-blue">
-            <SelectGroup className=" bg-dark-blue">
-              <SelectLabel>Languages</SelectLabel>
-              <SelectItem value="en-US">en-Us</SelectItem>
-              <SelectItem value="zh">zh</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select> */}
         <Toggle
           onClick={toogleLocales}
           className="text-[0.8rem] cursor-pointer bg-button-blue py-0 px-1 md:py-1 md:px-4 rounded-[3px] mr-[15px] md:mr-[20px] text-bright-blue"
         >
           {params.lang === "en-US" ? "zh" : "en-US"}
         </Toggle>
-        {/* </div> */}
         <Button className="text-[1rem] cursor-pointer bg-button-blue py-0 px-2 md:py-1 md:px-4 rounded-[3px] mr-[15px] md:mr-[20px] text-bright-blue">
           Health
         </Button>

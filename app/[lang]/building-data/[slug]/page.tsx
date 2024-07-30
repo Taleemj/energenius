@@ -12,15 +12,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useEffect, useRef, useState } from "react";
 import { ChartConfig } from "@/components/ui/chart";
-import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { DatePicker } from "antd";
+import { DatePicker, Select as AntSelect, Divider, Input } from "antd";
+import type { InputRef } from "antd";
 import dayjs from "dayjs";
+import { Button } from "@/components/ui/button";
+import axios from "axios";
 
 const Page = () => {
   const params = useParams();
   const router = useRouter();
+  const [apiData, setApiData] = useState<any>();
 
   const NonHVAC = {
     Total: {
@@ -86,7 +90,7 @@ const Page = () => {
           <span>No. of floors:28</span>
           <span>No. of HVAC:22</span>
           <span>PPD Levels:40%</span>
-          <span>CO2 Emissions:280 tons</span>
+          <span>CO2 PPM: 12</span>
         </p>
         <Select
           defaultValue="All Floors"
@@ -124,17 +128,37 @@ const Page = () => {
           />
           <RegularPieChart ChartConfig={NonHVAC} chartData={regularChartData} title="Non-HVAC Energy Breakdown (%)" />
         </div>
-        <PowerUsageEffectiveness />
+        <PowerUsageEffectiveness apiData={apiData} setApiData={setApiData} />
       </div>
 
       <Card className="flex items-center relative justify-around w-[85vw] py-9 mx-auto my-2 bg-dark-blue border">
         <h1 className="text-[18px] absolute top-[5px] font-bold left-1/2 transform -translate-x-1/2 text-white">
           Energy Costs Comparision
         </h1>
-        <BottomText amount="5000KW" text="Bugdeted Power Usage" color="text-white" />
-        <BottomText amount="4600KW" text="Acutal Power Usage" color="text-green-600" />
-        <BottomText amount="$3,600" text="Bugdeted power cost" color="text-white" />
-        <BottomText amount="$4,160" text="Actual power cost" color="text-red-600" />
+        <BottomText
+          amount={apiData?.energyConsumption[0][0].toFixed(2) + `(${apiData?.energyConsumption[0][1].toFixed(2)})`}
+          text="Bugdeted Power Usage"
+          color="text-white"
+        />
+        <BottomText
+          amount={apiData?.energyConsumption[1][0].toFixed(2) + `(${apiData?.energyConsumption[1][1].toFixed(2)})`}
+          text="Acutal Power Usage"
+          color={
+            apiData?.energyConsumption[0][1] > apiData?.energyConsumption[0][0] ? "text-red-600" : "text-green-600"
+          }
+        />
+        <BottomText
+          amount={"$" + apiData?.energyConsumption[0][0].toFixed(2) * 1}
+          text="Bugdeted power cost"
+          color="text-white"
+        />
+        <BottomText
+          amount={"$" + apiData?.energyConsumption[0][1].toFixed(2)}
+          text="Actual power cost"
+          color={
+            apiData?.energyConsumption[0][1] > apiData?.energyConsumption[0][0] ? "text-red-600" : "text-green-600"
+          }
+        />
       </Card>
     </div>
   );
@@ -142,8 +166,8 @@ const Page = () => {
 
 export default Page;
 
-const PowerUsageEffectiveness = () => {
-  const [dateValue, setDateValue] = useState<string | string[]>("2022-06-01 00:00");
+const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApiData: any }) => {
+  const [dateValue, setDateValue] = useState<string | string[]>("2022-06-01 14:00");
   const data: {
     text: string;
     value: string;
@@ -175,25 +199,119 @@ const PowerUsageEffectiveness = () => {
       type: "alert",
     },
   ];
+  const [selectOptions, setSelectOptions] = useState([
+    {
+      label: "Daily",
+      value: "daily",
+    },
+    {
+      label: "Weekly",
+      value: "weekly",
+    },
+  ]);
+  const [numberOfDays, setNumberOfDays] = useState("");
+  const [dropDownPeriodValue, setDropDownPeriodValue] = useState("1");
+  const inputRef = useRef<InputRef>(null);
+
+  const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNumberOfDays(event.target.value);
+  };
+
+  const addItem = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (numberOfDays.length > 0) {
+      setSelectOptions([
+        ...selectOptions,
+        {
+          label: `${numberOfDays} days`,
+          value: `${numberOfDays} days`,
+        },
+      ]);
+      setNumberOfDays("");
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
+    } else {
+      alert;
+    }
+  };
+
+  const getActivePeriodValues = async () => {
+    const params = new URLSearchParams({
+      datetime: `${dateValue}:00`,
+      period: dropDownPeriodValue,
+    });
+    const data = await axios.get(`https://energenius-be.vercel.app/getValues?${params.toString()}`);
+    setApiData(data.data);
+  };
+
+  useEffect(() => {
+    if (dateValue.length > 0) {
+      getActivePeriodValues();
+    }
+  }, [dateValue, dropDownPeriodValue]);
+
   return (
     <Card className="bg-dark-blue w-[49.5%] h-full pt-5 pl-1">
       <CardContent>
         <h1 className="text-xl text-white mb-2 font-bold">Active period between 1 st June - 31th August 2022</h1>
-        <DatePicker
-          showTime
-          onChange={(value, dateString) => {
-            setDateValue(dateString);
-          }}
-          defaultValue={dayjs("2022-06-01", "YYYY-MM-DD")}
-          minDate={dayjs("2022-06-01", "YYYY-MM-DD")}
-          maxDate={dayjs("2022-08-31", "YYYY-MM-DD")}
-          className="w-full bg-dark-blue border-[1px] border-border py-1 text-white hover:text-black"
-        />
+        <div className="w-full flex items-center justify-between">
+          <DatePicker
+            showTime
+            showSecond={false}
+            renderExtraFooter={() => (
+              <div className="flex items-center justify-end gap-10 pr-2 font-bold">
+                <span>H</span> <span>M</span>
+              </div>
+            )}
+            minuteStep={15}
+            onChange={(value, dateString) => {
+              setDateValue(dateString);
+            }}
+            defaultValue={dayjs("2022-06-01 14:00", "YYYY-MM-DD HH:mm")}
+            minDate={dayjs("2022-06-01", "YYYY-MM-DD")}
+            maxDate={dayjs("2022-08-31", "YYYY-MM-DD")}
+            className="w-[60%] bg-dark-blue border-[1px] border-border py-1 text-white hover:text-black"
+          />
+          <AntSelect
+            options={selectOptions}
+            defaultValue={"Daily"}
+            onChange={(value) => {
+              if (value === "daily") {
+                setDropDownPeriodValue("1");
+              } else if (value === "weekly") {
+                setDropDownPeriodValue("7");
+              } else {
+                setDropDownPeriodValue(value.split(" ")[0]);
+              }
+            }}
+            placeholder="Select period"
+            className="w-[35%] bg-dark-blue border-[1px] border-border antSelect"
+            dropdownRender={(menu) => (
+              <>
+                {menu}
+                <Divider className="my-[8px]" />
+                <div className="flex items-center justify-center flex-col">
+                  <Input
+                    placeholder="Please enter days (5)"
+                    ref={inputRef}
+                    value={numberOfDays}
+                    onChange={onNameChange}
+                    onKeyDown={(e) => e.stopPropagation()}
+                  />
+                  <Button onClick={addItem} className="w-full bg-button-blue rounded-sm text-bright-blue py-1 mt-2">
+                    Add
+                  </Button>
+                </div>
+              </>
+            )}
+          />
+        </div>
         <div className="flex items-end justify-between my-4">
           <div className="w-[28%] h-full flex flex-col gap-1 text-[14px]">
-            <h2>Energy consumption</h2>
-            <h2>PPD Level</h2>
-            <h2>CO2</h2>
+            <h2>Energy consumption(KW)</h2>
+            <h2>PPD Level(%)</h2>
+            <h2>CO2(PPM)</h2>
           </div>
           <div className="w-[70%]">
             <div className="flex items-center text-[14px] justify-between">
@@ -202,15 +320,34 @@ const PowerUsageEffectiveness = () => {
               <h2 className="w-[33%]">Efficient Rate</h2>
             </div>
             <div>
-              <ActivePeriodUsageValues baseline="100%" rl="100%" efficient="100%" />
-              <ActivePeriodUsageValues baseline="100%" rl="100%" efficient="100%" />
-              <ActivePeriodUsageValues baseline="100%" rl="100%" efficient="100%" />
+              <ActivePeriodUsageValues
+                baseline={apiData?.baseline[0]?.toFixed(2)}
+                rl={apiData?.RL[0]?.toFixed(2)}
+                efficient={apiData?.rate[0]?.toFixed(2)}
+              />
+              <ActivePeriodUsageValues
+                baseline={apiData?.baseline[1]?.toFixed(2)}
+                rl={apiData?.RL[1]?.toFixed(2)}
+                efficient={apiData?.rate[1]?.toFixed(2)}
+              />
+              <ActivePeriodUsageValues
+                baseline={apiData?.baseline[2]?.toFixed(2)}
+                rl={apiData?.RL[2]?.toFixed(2)}
+                efficient={apiData?.rate[2]?.toFixed(2)}
+              />
             </div>
           </div>
         </div>
 
         <h1 className="text-[16px] text-white mb-2 bg-[#1a2736] px-4 py-1 mt-4 w-[80%] mx-auto text-center">
-          {dateValue}
+          {dateValue.includes("2022-06-01")
+            ? //@ts-ignore
+              `${dateValue} - ${dayjs(dateValue).add(Number(dropDownPeriodValue), "day").format("YYYY-MM-DD")}`
+            : // @ts-ignore
+              `${dayjs(dateValue).subtract(Number(dropDownPeriodValue), "day").format("YYYY-MM-DD")} ${
+                // @ts-ignore
+                dateValue.split(" ")[1]
+              } - ${dateValue}`}
         </h1>
 
         <h1 className="text-xl text-white mb-2 font-bold mt-6">Alerts</h1>

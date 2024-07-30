@@ -110,5 +110,16 @@
     .ant-picker-input:hover svg {
       color: #2dabff;
     }
+    .antSelect * {
+      background-color: #131c27 !important;
+      color: white !important;
+    }
+    .ant-select-selection-item {
+      padding-left: 8px !important;
+    }
+    .ant-select-selector {
+      padding: 0 !important;
+      border: 0 !important;
+    }
   }
 }
