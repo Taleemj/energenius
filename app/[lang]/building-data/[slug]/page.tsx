@@ -251,8 +251,8 @@ const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApi
   };
 
   useEffect(() => {
-    setInitailRender(false);
-    if (dateValue.length > 0 && initalRender !== true) {
+    // setInitailRender(false);
+    if (dateValue.length > 0) {
       getActivePeriodValues();
     }
   }, [dateValue, dropDownPeriodValue]);
@@ -265,6 +265,7 @@ const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApi
           <DatePicker
             showTime
             showSecond={false}
+            defaultValue={dayjs("2022-06-01 14:00", "YYYY-MM-DD HH:mm")}
             renderExtraFooter={() => (
               <div className="flex items-center justify-end gap-10 pr-2 font-bold">
                 <span>H</span> <span>M</span>
@@ -285,7 +286,7 @@ const PowerUsageEffectiveness = ({ apiData, setApiData }: { apiData: any; setApi
           />
           <AntSelect
             options={selectOptions}
-            defaultValue={"select period"}
+            defaultValue={"daily"}
             onChange={(value) => {
               if (value === "daily") {
                 setDropDownPeriodValue("1");
