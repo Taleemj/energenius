@@ -94,7 +94,7 @@ const Page = () => {
           <span>CO2 PPM: 453</span>
         </p>
         <Select
-          defaultValue="All Floors"
+          defaultValue={`Floor ${params.num}`}
           onValueChange={(v) => {
             if (v === "All Floors") {
               router.push(`/${params.lang}/building-data/${params.slug}`);
